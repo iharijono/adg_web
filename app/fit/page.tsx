@@ -16,7 +16,7 @@ export default function FitPage() {
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
         Check your integration fit
       </h1>
-      <p className="mt-4 text-muted-foreground">
+      <p className="mt-4 text-lg text-muted-foreground">
         Pick your orchestration framework, answer a few yes/no questions
         about what your AI system already does, and see which Facet products
         apply today versus later.

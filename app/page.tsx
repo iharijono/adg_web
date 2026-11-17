@@ -3,8 +3,14 @@ import { ArrowRight, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { DynamicIcon } from "@/components/site/dynamic-icon";
+import { ProductIcon } from "@/components/site/product-icon";
 import { products } from "@/data/products";
+
+const PRINCIPLE_COLORS = [
+  "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+  "bg-violet-500/10 text-violet-600 dark:text-violet-400",
+  "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+];
 
 const PRINCIPLES = [
   {
@@ -37,30 +43,40 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
-        <Badge variant="secondary" className="mb-6">
-          Patent-pending · AI Operational Intelligence (AIOI)
-        </Badge>
-        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
-          One captured fact. Seven ways to put it to work.
-        </h1>
-        <p className="mt-6 max-w-2xl text-xl text-muted-foreground">
-          Facet observes any AI system — agentic or not, any framework, any
-          domain — and builds one canonical fact plane from it. Governance,
-          Analytics, FinOps, Execution Intelligence, Oversight Intelligence,
-          Trust/Risk/Threat Intelligence and Executive Intelligence are all
-          projections over those same facts, not separate integrations.
-        </p>
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Button render={<Link href="/fit" />} nativeButton={false} size="lg">
-            Check your integration fit <ArrowRight className="ml-1 size-4" />
-          </Button>
-          <Button render={<Link href="/demo" />} nativeButton={false} size="lg" variant="outline">
-            Try the live demo
-          </Button>
-          <Button render={<Link href="/products" />} nativeButton={false} size="lg" variant="ghost">
-            Explore products
-          </Button>
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_20%_-10%,theme(colors.indigo.500/0.18),transparent)]"
+        />
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+          <Badge variant="secondary" className="mb-6 border-primary/30 bg-primary/10 text-primary">
+            Patent-pending · AI Operational Intelligence (AIOI)
+          </Badge>
+          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
+            One captured fact.{" "}
+            <span className="bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">
+              Seven ways
+            </span>{" "}
+            to put it to work.
+          </h1>
+          <p className="mt-6 max-w-2xl text-xl text-muted-foreground">
+            Facet observes any AI system — agentic or not, any framework, any
+            domain — and builds one canonical fact plane from it. Governance,
+            Analytics, FinOps, Execution Intelligence, Oversight Intelligence,
+            Trust/Risk/Threat Intelligence and Executive Intelligence are all
+            projections over those same facts, not separate integrations.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Button render={<Link href="/fit" />} nativeButton={false} size="lg">
+              Check your integration fit <ArrowRight className="ml-1 size-4" />
+            </Button>
+            <Button render={<Link href="/demo" />} nativeButton={false} size="lg" variant="outline">
+              Try the live demo
+            </Button>
+            <Button render={<Link href="/products" />} nativeButton={false} size="lg" variant="ghost">
+              Explore products
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -68,8 +84,13 @@ export default function HomePage() {
       <section className="border-y border-border/60 bg-muted/20 py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-8 md:grid-cols-3">
-            {PRINCIPLES.map((p) => (
+            {PRINCIPLES.map((p, i) => (
               <div key={p.title}>
+                <span
+                  className={`mb-3 inline-flex size-9 items-center justify-center rounded-lg text-sm font-semibold ${PRINCIPLE_COLORS[i % PRINCIPLE_COLORS.length]}`}
+                >
+                  {i + 1}
+                </span>
                 <h3 className="font-semibold">{p.title}</h3>
                 <p className="mt-2 text-base text-muted-foreground">{p.body}</p>
               </div>
@@ -81,6 +102,9 @@ export default function HomePage() {
       {/* Products grid */}
       <section id="products" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <div className="mb-10 max-w-2xl">
+          <p className="mb-2 text-sm font-semibold tracking-wide text-primary uppercase">
+            Products
+          </p>
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Seven products, one captured fact
           </h2>
@@ -92,11 +116,11 @@ export default function HomePage() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p) => (
             <Link key={p.slug} href={`/products/${p.slug}`} className="group">
-              <Card className="h-full transition-colors group-hover:border-foreground/30">
+              <Card className="h-full border-border/60 transition-colors hover:shadow-sm group-hover:border-foreground/30">
                 <CardHeader className="flex flex-row items-start justify-between gap-2">
-                  <DynamicIcon name={p.icon} className="size-6 text-muted-foreground" />
+                  <ProductIcon icon={p.icon} color={p.color} />
                   {p.status === "meta" && (
-                    <Badge variant="outline" className="text-[10px]">
+                    <Badge variant="outline" className="border-indigo-500/30 bg-indigo-500/10 text-[10px] text-indigo-600 dark:text-indigo-400">
                       meta
                     </Badge>
                   )}
@@ -114,12 +138,15 @@ export default function HomePage() {
       {/* Honest labeling */}
       <section className="border-y border-border/60 bg-muted/20 py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="mb-2 text-sm font-semibold tracking-wide text-primary uppercase">
+            Honesty by design
+          </p>
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             We never call your code something it isn&apos;t
           </h2>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
-            <div className="flex gap-3">
-              <Check className="mt-0.5 size-5 shrink-0 text-emerald-600" />
+            <div className="flex gap-3 rounded-lg border border-emerald-600/20 bg-emerald-600/5 p-4">
+              <Check className="mt-0.5 size-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
               <p className="text-base text-muted-foreground">
                 A unit is labeled <strong className="text-foreground">&quot;agent&quot;</strong>{" "}
                 only when your own framework genuinely exposes a first-class
@@ -127,7 +154,7 @@ export default function HomePage() {
                 <code>agents.Agent</code>).
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-3 rounded-lg border border-destructive/20 bg-destructive/5 p-4">
               <X className="mt-0.5 size-5 shrink-0 text-destructive" />
               <p className="text-base text-muted-foreground">
                 A plain node graph, a direct LLM call, or any framework without
@@ -143,6 +170,9 @@ export default function HomePage() {
 
       {/* Framework coverage */}
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <p className="mb-2 text-sm font-semibold tracking-wide text-primary uppercase">
+          Coverage
+        </p>
         <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           Framework-agnostic by design
         </h2>
@@ -153,7 +183,11 @@ export default function HomePage() {
         </p>
         <div className="mt-8 flex flex-wrap gap-2">
           {FRAMEWORKS.map((f) => (
-            <Badge key={f} variant="secondary" className="text-sm font-normal px-3 py-1">
+            <Badge
+              key={f}
+              variant="secondary"
+              className="border-primary/20 bg-primary/5 px-3 py-1 text-sm font-normal text-foreground"
+            >
               {f}
             </Badge>
           ))}
@@ -161,18 +195,23 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border/60 bg-foreground text-background">
+      <section className="border-t border-border/60 bg-gradient-to-br from-primary via-primary to-violet-700 text-primary-foreground">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight">
               Not sure which products fit your system?
             </h2>
-            <p className="mt-2 text-background/70">
+            <p className="mt-2 text-primary-foreground/80">
               The integration-fit wizard walks through the same decision tree
               our own sales engineering uses.
             </p>
           </div>
-          <Button render={<Link href="/fit" />} nativeButton={false} size="lg" variant="secondary">
+          <Button
+            render={<Link href="/fit" />}
+            nativeButton={false}
+            size="lg"
+            className="bg-white text-primary hover:bg-white/90"
+          >
             Start the fit check <ArrowRight className="ml-1 size-4" />
           </Button>
         </div>

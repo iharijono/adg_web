@@ -16,11 +16,11 @@ const DEMO_URL = process.env.NEXT_PUBLIC_DEMO_URL;
 export default function DemoPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-      <Badge variant="secondary" className="mb-4">
+      <Badge variant="secondary" className="mb-4 border-primary/30 bg-primary/10 text-primary">
         On-demand environment
       </Badge>
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Live Demo</h1>
-      <p className="mt-4 text-muted-foreground">
+      <p className="mt-4 text-lg text-muted-foreground">
         The Facet live demo is provisioned on demand for a session and torn
         down afterward — it isn&apos;t a permanently-on environment. That
         keeps it a faithful, resettable walkthrough of the Customer Portal

@@ -6,7 +6,7 @@ export function SiteFooter() {
     <footer className="border-t border-border/60 bg-muted/20">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-4">
         <div className="space-y-2">
-          <div className="font-semibold">Facet</div>
+          <div className="font-semibold text-primary">Facet</div>
           <p className="text-sm text-muted-foreground">
             AI Operational Intelligence (AIOI) — a fact-based ontology and
             reflection-engine architecture for arbitrary AI systems, agents
@@ -19,7 +19,7 @@ export function SiteFooter() {
           <ul className="space-y-1.5 text-sm text-muted-foreground">
             {products.map((p) => (
               <li key={p.slug}>
-                <Link href={`/products/${p.slug}`} className="hover:text-foreground">
+                <Link href={`/products/${p.slug}`} className="hover:text-primary">
                   {p.name.replace(/^Facet /, "")}
                 </Link>
               </li>
@@ -31,22 +31,22 @@ export function SiteFooter() {
           <div className="text-sm font-medium">Resources</div>
           <ul className="space-y-1.5 text-sm text-muted-foreground">
             <li>
-              <Link href="/fit" className="hover:text-foreground">
+              <Link href="/fit" className="hover:text-primary">
                 Integration fit wizard
               </Link>
             </li>
             <li>
-              <Link href="/docs" className="hover:text-foreground">
+              <Link href="/docs" className="hover:text-primary">
                 Developer docs
               </Link>
             </li>
             <li>
-              <Link href="/downloads" className="hover:text-foreground">
+              <Link href="/downloads" className="hover:text-primary">
                 SDK downloads
               </Link>
             </li>
             <li>
-              <Link href="/demo" className="hover:text-foreground">
+              <Link href="/demo" className="hover:text-primary">
                 Live demo
               </Link>
             </li>
@@ -57,7 +57,7 @@ export function SiteFooter() {
           <div className="text-sm font-medium">Company</div>
           <ul className="space-y-1.5 text-sm text-muted-foreground">
             <li>
-              <Link href="/contact" className="hover:text-foreground">
+              <Link href="/contact" className="hover:text-primary">
                 Contact
               </Link>
             </li>

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DynamicIcon } from "@/components/site/dynamic-icon";
+import { ProductIcon } from "@/components/site/product-icon";
 import { MarkdownBody } from "@/components/site/markdown-body";
 import { getProduct, products } from "@/data/products";
 import { getProductContent } from "@/lib/content";
@@ -45,13 +45,17 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
             <ArrowLeft className="size-3.5" /> All products
           </Link>
           <div className="flex items-start gap-4">
-            <DynamicIcon name={product.icon} className="mt-1 size-9 text-foreground" />
+            <ProductIcon icon={product.icon} color={product.color} size="lg" />
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
                   {product.name}
                 </h1>
-                {product.status === "meta" && <Badge variant="outline">meta</Badge>}
+                {product.status === "meta" && (
+                  <Badge variant="outline" className="border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                    meta
+                  </Badge>
+                )}
               </div>
               <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
                 {product.tagline}

@@ -23,12 +23,16 @@ export default function DownloadsPage() {
       </p>
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
-        <Card>
+        <Card className="border-blue-500/20">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Terminal className="size-5 text-muted-foreground" />
+              <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
+                <Terminal className="size-4 text-blue-600 dark:text-blue-400" />
+              </span>
               <CardTitle>Python SDK</CardTitle>
-              <Badge variant="secondary">adg-sdk</Badge>
+              <Badge variant="secondary" className="border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-400">
+                adg-sdk
+              </Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -43,12 +47,16 @@ export default function DownloadsPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-emerald-500/20">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Package className="size-5 text-muted-foreground" />
+              <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10">
+                <Package className="size-4 text-emerald-600 dark:text-emerald-400" />
+              </span>
               <CardTitle>Node.js / TypeScript SDK</CardTitle>
-              <Badge variant="secondary">@adg/sdk-node</Badge>
+              <Badge variant="secondary" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+                @adg/sdk-node
+              </Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -69,12 +77,16 @@ export default function DownloadsPage() {
         real workload before committing to a platform deployment.
       </p>
       <div className="mt-6 grid gap-6">
-        <Card className="border-primary/30 bg-primary/5">
+        <Card className="border-indigo-500/30 bg-indigo-500/5">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Box className="size-5 text-muted-foreground" />
+              <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10">
+                <Box className="size-4 text-indigo-600 dark:text-indigo-400" />
+              </span>
               <CardTitle>Sandbox Integration Kit</CardTitle>
-              <Badge variant="secondary">request access</Badge>
+              <Badge variant="secondary" className="border-indigo-500/30 bg-indigo-500/10 text-indigo-700 dark:text-indigo-400">
+                request access
+              </Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">

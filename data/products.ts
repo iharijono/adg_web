@@ -12,6 +12,16 @@
 
 export type ProductStatus = "live" | "meta";
 
+/** Named accent used for icon badges/borders across product cards and pages. */
+export type ProductColor =
+  | "blue"
+  | "cyan"
+  | "emerald"
+  | "violet"
+  | "amber"
+  | "rose"
+  | "indigo";
+
 export interface Product {
   slug: string;
   name: string;
@@ -21,6 +31,8 @@ export interface Product {
   status: ProductStatus;
   /** Lucide icon name, rendered dynamically — keep in sync with lucide-react exports. */
   icon: string;
+  /** Accent color for this product's icon badge/borders, distinct per product for scannability. */
+  color: ProductColor;
 }
 
 export const products: Product[] = [
@@ -31,6 +43,7 @@ export const products: Product[] = [
       'When a regulator asks "why did your AI decide that?", can you prove it — or do you start a six-week investigation?',
     status: "live",
     icon: "ShieldCheck",
+    color: "blue",
   },
   {
     slug: "analytics",
@@ -39,6 +52,7 @@ export const products: Product[] = [
       "Your AI works — until it quietly doesn't. Would you notice before your customers do?",
     status: "live",
     icon: "LineChart",
+    color: "cyan",
   },
   {
     slug: "finops",
@@ -47,6 +61,7 @@ export const products: Product[] = [
       "Your hyperscaler and LLM invoice arrives as one number. Facet shows who and what is behind it — and why it happened.",
     status: "live",
     icon: "Banknote",
+    color: "emerald",
   },
   {
     slug: "execution-intelligence",
@@ -55,6 +70,7 @@ export const products: Product[] = [
       "You have multi-step AI systems running. Do you know which execution units you can trust with more autonomy — and which ones are costing you?",
     status: "live",
     icon: "Workflow",
+    color: "violet",
   },
   {
     slug: "oversight-intelligence",
@@ -63,6 +79,7 @@ export const products: Product[] = [
       "Your guardrails catch violations after they happen. Are they really working — and where will the next one occur?",
     status: "live",
     icon: "Eye",
+    color: "amber",
   },
   {
     slug: "trust-risk-threat-intelligence",
@@ -71,6 +88,7 @@ export const products: Product[] = [
       "When one AI decision goes wrong, how far does the damage reach — and can you prove which decisions were safe?",
     status: "live",
     icon: "ShieldAlert",
+    color: "rose",
   },
   {
     slug: "executive-intelligence",
@@ -79,6 +97,7 @@ export const products: Product[] = [
       'Your board asks one question: "Is our AI under control?" Today the answer is five dashboards and a guess.',
     status: "meta",
     icon: "Gauge",
+    color: "indigo",
   },
 ];
 
