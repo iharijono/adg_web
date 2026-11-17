@@ -135,6 +135,14 @@ export function FitWizard({ tree }: { tree: DecisionTree }) {
       )}
 
       {step === 0 && (
+        <div className="mb-4">
+          <Button size="sm" variant="ghost" render={<Link href="/" />} nativeButton={false} className="-ml-2">
+            <ArrowLeft className="mr-1 size-3.5" /> Back to home
+          </Button>
+        </div>
+      )}
+
+      {step === 0 && (
         <Card>
           <CardContent className="space-y-4 pt-6">
             <h2 className="text-lg font-semibold">{sizing.question}</h2>
