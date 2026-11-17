@@ -44,7 +44,7 @@ export default function HomePage() {
         <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
           One captured fact. Seven ways to put it to work.
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
+        <p className="mt-6 max-w-2xl text-xl text-muted-foreground">
           Facet observes any AI system — agentic or not, any framework, any
           domain — and builds one canonical fact plane from it. Governance,
           Analytics, FinOps, Execution Intelligence, Oversight Intelligence,
@@ -52,13 +52,13 @@ export default function HomePage() {
           projections over those same facts, not separate integrations.
         </p>
         <div className="mt-10 flex flex-wrap gap-3">
-          <Button render={<Link href="/fit" />} size="lg">
+          <Button render={<Link href="/fit" />} nativeButton={false} size="lg">
             Check your integration fit <ArrowRight className="ml-1 size-4" />
           </Button>
-          <Button render={<Link href="/demo" />} size="lg" variant="outline">
+          <Button render={<Link href="/demo" />} nativeButton={false} size="lg" variant="outline">
             Try the live demo
           </Button>
-          <Button render={<Link href="/products" />} size="lg" variant="ghost">
+          <Button render={<Link href="/products" />} nativeButton={false} size="lg" variant="ghost">
             Explore products
           </Button>
         </div>
@@ -71,7 +71,7 @@ export default function HomePage() {
             {PRINCIPLES.map((p) => (
               <div key={p.title}>
                 <h3 className="font-semibold">{p.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{p.body}</p>
+                <p className="mt-2 text-base text-muted-foreground">{p.body}</p>
               </div>
             ))}
           </div>
@@ -102,8 +102,8 @@ export default function HomePage() {
                   )}
                 </CardHeader>
                 <CardContent>
-                  <CardTitle className="mb-2 text-base">{p.name}</CardTitle>
-                  <p className="line-clamp-3 text-sm text-muted-foreground">{p.tagline}</p>
+                  <CardTitle className="mb-2 text-lg">{p.name}</CardTitle>
+                  <p className="line-clamp-3 text-base text-muted-foreground">{p.tagline}</p>
                 </CardContent>
               </Card>
             </Link>
@@ -120,7 +120,7 @@ export default function HomePage() {
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             <div className="flex gap-3">
               <Check className="mt-0.5 size-5 shrink-0 text-emerald-600" />
-              <p className="text-sm text-muted-foreground">
+              <p className="text-base text-muted-foreground">
                 A unit is labeled <strong className="text-foreground">&quot;agent&quot;</strong>{" "}
                 only when your own framework genuinely exposes a first-class
                 agent construct (e.g. the OpenAI Agents SDK&apos;s{" "}
@@ -129,7 +129,7 @@ export default function HomePage() {
             </div>
             <div className="flex gap-3">
               <X className="mt-0.5 size-5 shrink-0 text-destructive" />
-              <p className="text-sm text-muted-foreground">
+              <p className="text-base text-muted-foreground">
                 A plain node graph, a direct LLM call, or any framework without
                 an agent concept is shown honestly as a{" "}
                 <strong className="text-foreground">&quot;step&quot;</strong> or{" "}
@@ -153,7 +153,7 @@ export default function HomePage() {
         </p>
         <div className="mt-8 flex flex-wrap gap-2">
           {FRAMEWORKS.map((f) => (
-            <Badge key={f} variant="secondary" className="text-sm font-normal">
+            <Badge key={f} variant="secondary" className="text-sm font-normal px-3 py-1">
               {f}
             </Badge>
           ))}
@@ -172,7 +172,7 @@ export default function HomePage() {
               our own sales engineering uses.
             </p>
           </div>
-          <Button render={<Link href="/fit" />} size="lg" variant="secondary">
+          <Button render={<Link href="/fit" />} nativeButton={false} size="lg" variant="secondary">
             Start the fit check <ArrowRight className="ml-1 size-4" />
           </Button>
         </div>

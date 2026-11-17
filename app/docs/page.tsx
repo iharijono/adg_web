@@ -44,8 +44,8 @@ export default function DocsIndexPage() {
                 <Link key={d.slug} href={`/docs/${d.slug}`} className="group">
                   <Card className="h-full transition-colors group-hover:border-foreground/30">
                     <CardContent>
-                      <CardTitle className="mb-2 text-base">{d.title}</CardTitle>
-                      <p className="text-sm text-muted-foreground">{d.description}</p>
+                      <CardTitle className="mb-2 text-lg">{d.title}</CardTitle>
+                      <p className="text-base text-muted-foreground">{d.description}</p>
                     </CardContent>
                   </Card>
                 </Link>

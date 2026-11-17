@@ -75,10 +75,10 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
       <section className="border-t border-border/60 bg-muted/20 py-10">
         <div className="mx-auto flex max-w-4xl flex-col items-start gap-4 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <Button render={<Link href={`/products/${next.slug}`} />} variant="outline">
+          <Button render={<Link href={`/products/${next.slug}`} />} nativeButton={false} variant="outline">
             Next: {next.name} <ArrowRight className="ml-1 size-4" />
           </Button>
-          <Button render={<Link href="/fit" />}>Check your integration fit</Button>
+          <Button render={<Link href="/fit" />} nativeButton={false}>Check your integration fit</Button>
         </div>
       </section>
     </div>

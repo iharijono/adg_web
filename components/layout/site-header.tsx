@@ -33,10 +33,10 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button render={<Link href="/contact" />} variant="ghost" size="sm" className="hidden sm:inline-flex">
+          <Button render={<Link href="/contact" />} nativeButton={false} variant="ghost" size="sm" className="hidden sm:inline-flex">
             Contact
           </Button>
-          <Button render={<Link href="/demo" />} size="sm">
+          <Button render={<Link href="/demo" />} nativeButton={false} size="sm">
             Try the live demo
           </Button>
         </div>

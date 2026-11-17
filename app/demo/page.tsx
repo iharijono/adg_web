@@ -32,6 +32,7 @@ export default function DemoPage() {
           <p className="font-medium">A demo session is live right now.</p>
           <Button
             render={<a href={DEMO_URL} target="_blank" rel="noreferrer" />}
+            nativeButton={false}
             className="mt-4"
           >
             Open the Customer Portal
@@ -44,7 +45,7 @@ export default function DemoPage() {
             Request a live walkthrough and we&apos;ll schedule one, or spin up
             a session for you.
           </p>
-          <Button render={<Link href="/contact" />} className="mt-4">
+          <Button render={<Link href="/contact" />} nativeButton={false} className="mt-4">
             Request a live walkthrough
           </Button>
         </div>

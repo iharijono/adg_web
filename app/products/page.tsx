@@ -37,8 +37,8 @@ export default function ProductsIndexPage() {
                 )}
               </CardHeader>
               <CardContent>
-                <CardTitle className="mb-2 text-base">{p.name}</CardTitle>
-                <p className="text-sm text-muted-foreground">{p.tagline}</p>
+                <CardTitle className="mb-2 text-lg">{p.name}</CardTitle>
+                <p className="text-base text-muted-foreground">{p.tagline}</p>
               </CardContent>
             </Card>
           </Link>
