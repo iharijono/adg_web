@@ -16,9 +16,8 @@ export default function DownloadsPage() {
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">SDK Downloads</h1>
       <p className="mt-4 text-lg text-muted-foreground">
         Both SDKs are customer-facing: framework adapters and instrumentation
-        only, no platform source. The Node SDK installs directly from source
-        today; the Python SDK isn&apos;t yet published, so access is
-        request-based until a packaged release is available.
+        only, no platform source. Neither is published to PyPI/npm yet, so
+        access is request-based until packaged releases are available.
       </p>
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
@@ -67,9 +66,13 @@ export default function DownloadsPage() {
               Canonical Trace/Activity/Artifact/Resource/Lineage ontology,
               REST transport, and the Vercel AI SDK adapter.
             </p>
-            <pre className="overflow-x-auto rounded-md bg-muted p-3 text-xs">
-{`npm install "github:iharijono/adg#path:sdk-node/adg-sdk"`}
-            </pre>
+            <p className="text-sm text-muted-foreground">
+              Not yet published to npm — request install access and
+              we&apos;ll get you set up.
+            </p>
+            <Button render={<Link href="/contact" />} nativeButton={false} size="sm">
+              Request the Node.js SDK
+            </Button>
           </CardContent>
         </Card>
       </div>
