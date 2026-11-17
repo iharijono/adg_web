@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { CardLinkFooter } from "@/components/site/card-link-footer";
 import { docs } from "@/data/docs";
 
 export const metadata: Metadata = {
@@ -43,10 +44,11 @@ export default function DocsIndexPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               {entries.map((d) => (
                 <Link key={d.slug} href={`/docs/${d.slug}`} className="group">
-                  <Card className="h-full border-border/60 transition-colors hover:shadow-sm group-hover:border-primary/40">
-                    <CardContent>
-                      <CardTitle className="mb-2 text-lg">{d.title}</CardTitle>
+                  <Card className="h-full border-border/60 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
+                    <CardContent className="flex flex-col">
+                      <CardTitle className="mb-2 text-lg transition-colors group-hover:text-primary">{d.title}</CardTitle>
                       <p className="text-base text-muted-foreground">{d.description}</p>
+                      <CardLinkFooter label="Read guide" />
                     </CardContent>
                   </Card>
                 </Link>

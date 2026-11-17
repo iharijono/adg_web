@@ -25,7 +25,7 @@ export function SiteHeader() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="text-foreground/80 transition-colors hover:text-primary hover:underline hover:underline-offset-4"
             >
               {link.label}
             </Link>
@@ -49,7 +49,7 @@ export function SiteHeader() {
             <Link
               key={p.slug}
               href={`/products/${p.slug}`}
-              className="whitespace-nowrap transition-colors hover:text-foreground"
+              className="whitespace-nowrap transition-colors hover:text-primary hover:underline hover:underline-offset-4"
             >
               {p.name.replace(/^Facet /, "")}
             </Link>

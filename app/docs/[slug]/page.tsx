@@ -30,7 +30,7 @@ export default async function DocPage({ params }: PageProps<"/docs/[slug]">) {
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
       <Link
         href="/docs"
-        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80 hover:underline"
       >
         <ArrowLeft className="size-3.5" /> All docs
       </Link>

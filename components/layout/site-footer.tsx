@@ -19,7 +19,7 @@ export function SiteFooter() {
           <ul className="space-y-1.5 text-sm text-muted-foreground">
             {products.map((p) => (
               <li key={p.slug}>
-                <Link href={`/products/${p.slug}`} className="hover:text-primary">
+                <Link href={`/products/${p.slug}`} className="hover:text-primary hover:underline hover:underline-offset-4">
                   {p.name.replace(/^Facet /, "")}
                 </Link>
               </li>
@@ -31,22 +31,22 @@ export function SiteFooter() {
           <div className="text-sm font-medium">Resources</div>
           <ul className="space-y-1.5 text-sm text-muted-foreground">
             <li>
-              <Link href="/fit" className="hover:text-primary">
+              <Link href="/fit" className="hover:text-primary hover:underline hover:underline-offset-4">
                 Integration fit wizard
               </Link>
             </li>
             <li>
-              <Link href="/docs" className="hover:text-primary">
+              <Link href="/docs" className="hover:text-primary hover:underline hover:underline-offset-4">
                 Developer docs
               </Link>
             </li>
             <li>
-              <Link href="/downloads" className="hover:text-primary">
+              <Link href="/downloads" className="hover:text-primary hover:underline hover:underline-offset-4">
                 SDK downloads
               </Link>
             </li>
             <li>
-              <Link href="/demo" className="hover:text-primary">
+              <Link href="/demo" className="hover:text-primary hover:underline hover:underline-offset-4">
                 Live demo
               </Link>
             </li>
@@ -57,7 +57,7 @@ export function SiteFooter() {
           <div className="text-sm font-medium">Company</div>
           <ul className="space-y-1.5 text-sm text-muted-foreground">
             <li>
-              <Link href="/contact" className="hover:text-primary">
+              <Link href="/contact" className="hover:text-primary hover:underline hover:underline-offset-4">
                 Contact
               </Link>
             </li>

@@ -40,7 +40,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
         <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
           <Link
             href="/products"
-            className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+            className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80 hover:underline"
           >
             <ArrowLeft className="size-3.5" /> All products
           </Link>

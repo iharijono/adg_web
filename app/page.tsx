@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ProductIcon } from "@/components/site/product-icon";
+import { CardLinkFooter } from "@/components/site/card-link-footer";
 import { products } from "@/data/products";
 
 const PRINCIPLE_COLORS = [
@@ -116,7 +117,7 @@ export default function HomePage() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p) => (
             <Link key={p.slug} href={`/products/${p.slug}`} className="group">
-              <Card className="h-full border-border/60 transition-colors hover:shadow-sm group-hover:border-foreground/30">
+              <Card className="h-full border-border/60 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
                 <CardHeader className="flex flex-row items-start justify-between gap-2">
                   <ProductIcon icon={p.icon} color={p.color} />
                   {p.status === "meta" && (
@@ -125,9 +126,10 @@ export default function HomePage() {
                     </Badge>
                   )}
                 </CardHeader>
-                <CardContent>
-                  <CardTitle className="mb-2 text-lg">{p.name}</CardTitle>
+                <CardContent className="flex flex-col">
+                  <CardTitle className="mb-2 text-lg transition-colors group-hover:text-primary">{p.name}</CardTitle>
                   <p className="line-clamp-3 text-base text-muted-foreground">{p.tagline}</p>
+                  <CardLinkFooter label="Explore product" />
                 </CardContent>
               </Card>
             </Link>
