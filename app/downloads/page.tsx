@@ -10,16 +10,15 @@ export const metadata: Metadata = {
   description: "Install the Facet Python and Node.js/TypeScript SDKs.",
 };
 
-const REPO = "github.com/iharijono/adg";
-
 export default function DownloadsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">SDK Downloads</h1>
       <p className="mt-4 text-lg text-muted-foreground">
         Both SDKs are customer-facing: framework adapters and instrumentation
-        only, no platform source. They are not yet published to PyPI/npm —
-        install directly from source until a packaged release is available.
+        only, no platform source. The Node SDK installs directly from source
+        today; the Python SDK isn&apos;t yet published, so access is
+        request-based until a packaged release is available.
       </p>
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
@@ -41,9 +40,13 @@ export default function DownloadsPage() {
               Agents, Pydantic AI, AWS Strands Agents) plus the core
               ontology/emitter runtime.
             </p>
-            <pre className="overflow-x-auto rounded-md bg-muted p-3 text-xs">
-{`pip install "adg-sdk @ git+https://${REPO}.git#subdirectory=sdk"`}
-            </pre>
+            <p className="text-sm text-muted-foreground">
+              Not yet published to PyPI — request install access and
+              we&apos;ll get you set up.
+            </p>
+            <Button render={<Link href="/contact" />} nativeButton={false} size="sm">
+              Request the Python SDK
+            </Button>
           </CardContent>
         </Card>
 
