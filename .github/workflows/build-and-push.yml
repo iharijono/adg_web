@@ -1,0 +1,116 @@
+name: Build and push website image
+
+# Builds the static export (requires the sibling adg_prod/
+# ai-decision-governance repos for scripts/sync-content.ts) and
+# packages it into a tiny nginx image, pushed to GHCR as a PUBLIC
+# package -- the demo EC2 instance pulls it with zero credentials,
+# same pattern as ai-decision-governance's own build-and-push.yml.
+# See README.md's Deployment section and
+# ai-decision-governance's docs/deployment/ec2-demo-cicd.md.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Extra tag to apply in addition to the commit SHA (e.g. 'latest'). Leave blank to only tag with the SHA."
+        required: false
+        default: "latest"
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/adg_web
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.tags.outputs.sha_tag }}
+    steps:
+      - name: Checkout adg_web
+        uses: actions/checkout@v4
+        with:
+          path: adg_web
+
+      - name: Checkout adg_prod
+        uses: actions/checkout@v4
+        with:
+          repository: iharijono/adg_prod
+          token: ${{ secrets.CROSS_REPO_TOKEN }}
+          path: adg_prod
+
+      - name: Checkout ai-decision-governance
+        uses: actions/checkout@v4
+        with:
+          repository: iharijono/adg
+          token: ${{ secrets.CROSS_REPO_TOKEN }}
+          path: ai-decision-governance
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: adg_web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: adg_web
+        run: npm ci
+
+      - name: Build static export
+        working-directory: adg_web
+        run: npm run build
+
+      - name: Upload static site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: adg-web-static-site
+          path: adg_web/out/
+          retention-days: 14
+
+      - name: Compute tags
+        id: tags
+        run: echo "sha_tag=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: adg_web
+          file: adg_web/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.image_tag || 'latest' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Make the package version public
+        # Same one-time manual step as ai-decision-governance's
+        # build-and-push.yml -- GHCR's visibility API needs a
+        # broader-scoped PAT than this workflow intentionally holds.
+        run: |
+          echo "If this is the first-ever push to ${{ env.IMAGE_NAME }}, go to:"
+          echo "  https://github.com/users/${{ github.repository_owner }}/packages/container/adg_web/settings"
+          echo "and set visibility to Public (one-time step, not needed again)."
+
+      - name: Summary
+        run: |
+          echo "### Image pushed" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Use this tag as the \`website_image_tag\` input to ai-decision-governance's demo-up workflow." >> "$GITHUB_STEP_SUMMARY"

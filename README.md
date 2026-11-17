@@ -83,9 +83,18 @@ scripts/sync-content.ts
 
 ## Deployment
 
-The static export is served by nginx on the **same ephemeral EC2 instance**
-as the `ai-decision-governance` live demo stack (see that repo's
-`infra/demo/` and `demo-up.yml`/`demo-down.yml`). This is an intentional,
-pragmatic choice for the current stage: a single transactional "demo + site
-up/down together" deployment, at the cost of the public site going offline
+The static export (`out/`) is packaged into a tiny nginx image
+(`Dockerfile`, `nginx.conf`), pushed to `ghcr.io/iharijono/adg_web` by
+`.github/workflows/build-and-push.yml`, and run as the `website` service
+on the **same ephemeral EC2 instance** as the `ai-decision-governance`
+live demo stack (see that repo's `infra/demo/` and
+`demo-up.yml`/`demo-down.yml`). This is an intentional, pragmatic choice
+for the current stage: a single transactional "demo + site up/down
+together" deployment, at the cost of the public site going offline
 whenever the demo environment is torn down.
+
+Because the website image is built once and reused across many instance
+replacements (each with a different public DNS name), `/demo`'s
+Customer-Portal link is resolved client-side at runtime from the current
+page's own hostname (see `components/site/demo-portal-link.tsx`) rather
+than baked in at build time.
