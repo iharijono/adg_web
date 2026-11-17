@@ -1,0 +1,53 @@
+name: CI
+
+# Lint, type-check and build the site. Content sync requires the sibling
+# repos checked out (see build-and-sync.yml) — this workflow checks out all
+# three so `npm run build` (which runs `prebuild` -> sync-content) succeeds
+# exactly like a real deployment build would.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout adg_web
+        uses: actions/checkout@v4
+        with:
+          path: adg_web
+
+      - name: Checkout adg_prod
+        uses: actions/checkout@v4
+        with:
+          repository: iharijono/adg_prod
+          token: ${{ secrets.CROSS_REPO_TOKEN }}
+          path: adg_prod
+
+      - name: Checkout ai-decision-governance
+        uses: actions/checkout@v4
+        with:
+          repository: iharijono/adg
+          token: ${{ secrets.CROSS_REPO_TOKEN }}
+          path: ai-decision-governance
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: adg_web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: adg_web
+        run: npm ci
+
+      - name: Lint
+        working-directory: adg_web
+        run: npm run lint
+
+      - name: Build (includes content sync + typecheck)
+        working-directory: adg_web
+        run: npm run build
