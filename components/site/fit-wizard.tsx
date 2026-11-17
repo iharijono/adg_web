@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, CircleDashed, MinusCircle, XCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, CircleDashed, MinusCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -101,6 +101,10 @@ export function FitWizard({ tree }: { tree: DecisionTree }) {
     setStep((s) => s + 1);
   }
 
+  function goBack() {
+    setStep((s) => Math.max(0, s - 1));
+  }
+
   function restart() {
     setFramework(null);
     setAnswers({});
@@ -111,9 +115,14 @@ export function FitWizard({ tree }: { tree: DecisionTree }) {
     <div>
       {/* Progress */}
       {step > 0 && !isResults && (
-        <p className="mb-4 text-sm text-muted-foreground">
-          Question {step} of {gates.length}
-        </p>
+        <div className="mb-4 flex items-center gap-3">
+          <Button size="sm" variant="ghost" onClick={goBack} className="-ml-2">
+            <ArrowLeft className="mr-1 size-3.5" /> Back
+          </Button>
+          <p className="text-sm text-muted-foreground">
+            Question {step} of {gates.length}
+          </p>
+        </div>
       )}
 
       {step === 0 && (
@@ -205,6 +214,9 @@ export function FitWizard({ tree }: { tree: DecisionTree }) {
           })}
 
           <div className="flex gap-3 pt-4">
+            <Button variant="outline" onClick={goBack}>
+              <ArrowLeft className="mr-1 size-4" /> Back
+            </Button>
             <Button render={<Link href="/contact" />} nativeButton={false}>Talk to us about these results</Button>
             <Button variant="outline" onClick={restart}>
               Start over
