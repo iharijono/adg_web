@@ -56,7 +56,7 @@ export interface DecisionTreeGate {
 export interface DecisionTreeFrameworkSizing {
   question: string;
   sizeLabels: Record<string, string>;
-  items: { name: string; size: string }[];
+  items: { name: string; size: string; langs: string[] }[];
 }
 
 export interface DecisionTree {

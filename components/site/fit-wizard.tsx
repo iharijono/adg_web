@@ -65,6 +65,18 @@ const SIZE_BADGE_META: Record<string, string> = {
   H: "border-red-600/40 bg-red-600/15 text-red-700 dark:text-red-400",
 };
 
+/** Which SDK(s) ship a native adapter for a given framework, straight from
+ *  sdk/adg/adapters/* (Python) and sdk-node/adg-sdk/src/adapters/* (Node/TS)
+ *  in ai-decision-governance. Deliberately not "language agnostic" -- some
+ *  frameworks (LangGraph, Semantic Kernel, CrewAI/AutoGen, Pydantic AI, AWS
+ *  Strands Agents) only have a Python adapter today; Vercel AI SDK is
+ *  Node/TS-only. Only the generic "plain LLM API" and "fully bespoke" rows
+ *  are covered by both SDKs. */
+const LANG_LABELS: Record<string, string> = {
+  python: "Python",
+  node: "Node.js / TypeScript",
+};
+
 const PRODUCT_SLUGS: Record<string, string> = {
   governance: "governance",
   finops: "finops",
@@ -146,6 +158,15 @@ export function FitWizard({ tree }: { tree: DecisionTree }) {
         <Card>
           <CardContent className="space-y-4 pt-6">
             <h2 className="text-lg font-semibold">{sizing.question}</h2>
+            <p className="text-sm text-muted-foreground">
+              Deployment target never affects this — AWS, GCP, Azure,
+              Kubernetes, on-prem, or your laptop all integrate identically,
+              since the SDK only ever talks to Facet over plain HTTP.
+              Language is <em>not</em> uniformly agnostic, though: effort
+              below depends on your orchestration framework, and each
+              framework&apos;s native adapter is only available in the SDK
+              language(s) tagged on it.
+            </p>
             <div className="grid gap-2.5 sm:grid-cols-2">
               {sizing.items.map((item) => {
                 const sizeClass = SIZE_META[item.size]?.className ?? "";
@@ -165,6 +186,16 @@ export function FitWizard({ tree }: { tree: DecisionTree }) {
                     >
                       {sizing.sizeLabels[item.size]} effort
                     </span>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {item.langs.map((lang) => (
+                        <span
+                          key={lang}
+                          className="rounded-full border border-border bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                        >
+                          {LANG_LABELS[lang] ?? lang}
+                        </span>
+                      ))}
+                    </div>
                   </button>
                 );
               })}
