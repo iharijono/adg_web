@@ -101,6 +101,15 @@ export function FitWizard({ tree }: { tree: DecisionTree }) {
     setStep((s) => s + 1);
   }
 
+  function skip(key: string) {
+    setAnswers((prev) => {
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+    setStep((s) => s + 1);
+  }
+
   function goBack() {
     setStep((s) => Math.max(0, s - 1));
   }
@@ -171,6 +180,9 @@ export function FitWizard({ tree }: { tree: DecisionTree }) {
               </Button>
               <Button size="lg" variant="outline" onClick={() => answer(currentGate.key, "no")}>
                 No
+              </Button>
+              <Button size="lg" variant="ghost" className="text-muted-foreground" onClick={() => skip(currentGate.key)}>
+                Not sure
               </Button>
             </div>
           </CardContent>
