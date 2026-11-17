@@ -19,6 +19,13 @@ jobs:
         with:
           path: adg_web
 
+      # CROSS_REPO_TOKEN: a fine-grained PAT with read-only Contents
+      # access to adg_prod and adg (both private repos), stored as a
+      # repository secret here. actions/checkout's default GITHUB_TOKEN
+      # can't check out a sibling private repo. See
+      # ai-decision-governance's docs/deployment/cross-repo-ci-token.md
+      # for how to create/rotate it and why "Input required and not
+      # supplied: token" means it's missing or expired.
       - name: Checkout adg_prod
         uses: actions/checkout@v4
         with:

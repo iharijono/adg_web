@@ -40,6 +40,12 @@ It requires `../adg_prod` and `../ai-decision-governance` to exist as sibling
 checkouts (override with `ADG_PROD_PATH` / `ADG_PLATFORM_PATH` env vars). It
 also runs automatically as `prebuild`, before every `next build`.
 
+In CI, these sibling repos are checked out via `actions/checkout`'s
+`repository:`/`token:` inputs (both `adg_prod` and `adg` are private),
+using the `CROSS_REPO_TOKEN` repository secret — see
+`ai-decision-governance`'s
+`docs/deployment/cross-repo-ci-token.md` for how to create/rotate it.
+
 There is no JSON schema/validation pipeline in `adg_prod` yet (that's the
 planned Phase 2 "Content Factory" — `products.json`, `domains.json`, etc.,
 with CI validation). Until then, this script reads the raw markdown directly.
