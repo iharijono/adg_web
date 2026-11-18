@@ -42,6 +42,13 @@ export const docs: DocEntry[] = [
     group: "Mapping & configuration",
   },
   {
+    slug: "sdk-platform-compatibility-guide",
+    title: "SDK & Platform Compatibility Guide",
+    description:
+      "Whether it's safe to upgrade your SDK independently of your platform tenant, what happens if they drift apart, and what (if anything) you need to do about it.",
+    group: "Reference",
+  },
+  {
     slug: "langchain-integration-guide",
     title: "LangChain — Integration Guide",
     description: "Step-by-step developer guide for instrumenting a LangChain application.",

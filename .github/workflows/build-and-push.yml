@@ -7,9 +7,17 @@ name: Build and push website image
 # same pattern as ai-decision-governance's own build-and-push.yml.
 # See README.md's Deployment section and
 # ai-decision-governance's docs/deployment/ec2-demo-cicd.md.
+#
+# Triggered manually (workflow_dispatch) rather than on every push --
+# same reasoning as adg's own build-and-push.yml: this image is only
+# needed when you're about to deploy (demo-up), not on every commit.
+# Drive it via `gh workflow run "Build and push website image"`, or
+# end to end via ai-decision-governance's `make ec2-deploy`
+# (tools/ec2-deploy.sh), which triggers this and adg's own
+# build-and-push together, then runs demo-up pinned to both exact
+# commit SHAs. CI (lint/typecheck/build validation, ci.yml) still
+# runs on every push/PR -- only the image build+push is manual.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       image_tag:

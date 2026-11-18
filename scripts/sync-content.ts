@@ -77,6 +77,8 @@ const DOC_SOURCES: Record<string, string> = {
   "field-mapping-guide": "docs/developer-guides/field-mapping-guide.md",
   "semantic-mapping-guide":
     "docs/developer-guides/semantic-mapping-guide.md",
+  "sdk-platform-compatibility-guide":
+    "docs/developer-guides/sdk-platform-compatibility-guide.md",
   // NOTE: the `*-customer-onboarding-playbook.md` sources are intentionally
   // NOT synced here. They are internal sales/CS enablement material
   // (opportunity-qualification checklists, effort-estimate coaching,
