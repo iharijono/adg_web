@@ -53,30 +53,37 @@ const PRODUCT_SOURCES: Record<string, string> = {
     "product/one-pagers/executive-intelligence.customer.md",
 };
 
+/** slug -> source path (relative to ADG_PROD) of bundle/suite prose content. */
+const BUNDLE_SOURCES: Record<string, string> = {
+  "bundles-overview": "product/bundles-overview.md",
+};
+
 /** doc slug -> source path (relative to ADG_PLATFORM) of public developer docs. */
 const DOC_SOURCES: Record<string, string> = {
   "langchain-integration-guide":
     "docs/developer-guides/langchain-integration-guide.md",
-  "langchain-onboarding-playbook":
-    "docs/developer-guides/langchain-customer-onboarding-playbook.md",
   "openai-agents-integration-guide":
     "docs/developer-guides/openai-agents-integration-guide.md",
-  "openai-agents-onboarding-playbook":
-    "docs/developer-guides/openai-agents-customer-onboarding-playbook.md",
   "pydantic-ai-integration-guide":
     "docs/developer-guides/pydantic-ai-integration-guide.md",
-  "pydantic-ai-onboarding-playbook":
-    "docs/developer-guides/pydantic-ai-customer-onboarding-playbook.md",
   "strands-agents-integration-guide":
     "docs/developer-guides/strands-agents-integration-guide.md",
-  "strands-agents-onboarding-playbook":
-    "docs/developer-guides/strands-agents-customer-onboarding-playbook.md",
   "vercel-ai-integration-guide":
     "docs/developer-guides/vercel-ai-integration-guide.md",
-  "vercel-ai-onboarding-playbook":
-    "docs/developer-guides/vercel-ai-customer-onboarding-playbook.md",
   "ontology-mapping-decision-guide":
     "docs/developer-guides/ontology-mapping-decision-guide.md",
+  "artifact-type-mapping-guide":
+    "docs/developer-guides/artifact-type-mapping.md",
+  "field-mapping-guide": "docs/developer-guides/field-mapping-guide.md",
+  "semantic-mapping-guide":
+    "docs/developer-guides/semantic-mapping-guide.md",
+  // NOTE: the `*-customer-onboarding-playbook.md` sources are intentionally
+  // NOT synced here. They are internal sales/CS enablement material
+  // (opportunity-qualification checklists, effort-estimate coaching,
+  // internal roadmap citations) written for ADG's own sellers/solutions
+  // engineers, not customers -- see the "docs health" audit. Do not add
+  // them back without first rewriting them as genuinely customer-facing
+  // content.
 };
 
 function resetDir(dir: string) {
@@ -111,6 +118,20 @@ function syncProducts() {
       source: `adg_prod/${relPath}`,
     });
     console.log(`  product  ${slug.padEnd(32)} <- ${relPath}`);
+  }
+}
+
+function syncBundles() {
+  const destDir = join(REPO_ROOT, "content", "bundles");
+  resetDir(destDir);
+  for (const [slug, relPath] of Object.entries(BUNDLE_SOURCES)) {
+    const src = join(ADG_PROD, relPath);
+    const dest = join(destDir, `${slug}.md`);
+    copyWithFrontmatter(src, dest, {
+      slug,
+      source: `adg_prod/${relPath}`,
+    });
+    console.log(`  bundle   ${slug.padEnd(32)} <- ${relPath}`);
   }
 }
 
@@ -153,6 +174,11 @@ interface SourceCapability {
   status: "available" | "in_development";
 }
 
+interface SourceUpgradeSignal {
+  signal: string;
+  add_domain: string;
+}
+
 interface SourceDomain {
   slug: string;
   order: number;
@@ -163,6 +189,8 @@ interface SourceDomain {
   tagline: string;
   buyers: string[];
   capabilities: SourceCapability[];
+  standalone_sufficient_when?: string[];
+  upgrade_signals?: SourceUpgradeSignal[];
 }
 
 /**
@@ -228,6 +256,11 @@ export interface ProductCapability {
   status: CapabilityStatus;
 }
 
+export interface ProductUpgradeSignal {
+  signal: string;
+  addDomain: string;
+}
+
 export interface Product {
   slug: string;
   name: string;
@@ -243,6 +276,10 @@ export interface Product {
   buyers: string[];
   /** Capability bullets with ship status, sourced from the product's customer one-pager. */
   capabilities: ProductCapability[];
+  /** Scenarios where this domain alone is enough -- anti-oversell framing, see adg_prod/README.md. */
+  standaloneSufficientWhen?: string[];
+  /** Signals suggesting another domain should be added, each pointing at that domain's slug. */
+  upgradeSignals?: ProductUpgradeSignal[];
 }
 `;
 
@@ -254,6 +291,17 @@ export interface Product {
             `      { id: ${JSON.stringify(c.id)}, name: ${JSON.stringify(c.name)}, status: ${JSON.stringify(c.status)} },`,
         )
         .join("\n");
+      const standaloneField = d.standalone_sufficient_when
+        ? `    standaloneSufficientWhen: ${JSON.stringify(d.standalone_sufficient_when)},\n`
+        : "";
+      const upgradeField = d.upgrade_signals
+        ? `    upgradeSignals: [\n${d.upgrade_signals
+            .map(
+              (s) =>
+                `      { signal: ${JSON.stringify(s.signal)}, addDomain: ${JSON.stringify(s.add_domain)} },`,
+            )
+            .join("\n")}\n    ],\n`
+        : "";
       return `  {
     slug: ${JSON.stringify(d.slug)},
     name: ${JSON.stringify(d.name)},
@@ -265,7 +313,7 @@ export interface Product {
     capabilities: [
 ${caps}
     ],
-  },`;
+${standaloneField}${upgradeField}  },`;
     })
     .join("\n");
 
@@ -280,6 +328,103 @@ export function getProduct(slug: string): Product | undefined {
   writeFileSync(destPath, out, "utf-8");
   console.log(
     `  generate data/products.ts <- adg_prod/product/generated/domains.json (${domains.length} products)`,
+  );
+}
+
+interface SourceBundle {
+  slug: string;
+  name: string;
+  pricing_status: "unbundled" | "bundled";
+  tagline: string;
+  target_industries: string[];
+  includes_domains: string[];
+}
+
+/**
+ * Generates data/bundles.ts from adg_prod's Product Definition Layer bundle
+ * export (`product/generated/products.json`, from `products/*.yaml` via
+ * `adg_prod/tools/generate_product_catalog.py`).
+ *
+ * `pricing_status: "unbundled"` bundles compose domains that are each
+ * already live and enableable today via the Customer Portal -- what does
+ * NOT exist yet is a discounted bundle-level price/SKU for that exact
+ * combination. See adg_prod/products/README.md and
+ * adg_prod/product/bundles-overview.md for why that distinction exists
+ * and must never be blurred on the website.
+ */
+function generateBundlesTs() {
+  const productsJsonPath = join(
+    ADG_PROD,
+    "product",
+    "generated",
+    "products.json",
+  );
+  if (!existsSync(productsJsonPath)) {
+    throw new Error(
+      `sync-content: ${productsJsonPath} not found. Run ` +
+        `'python3 tools/generate_product_catalog.py' in adg_prod first ` +
+        `(it generates this file from products/*.yaml).`,
+    );
+  }
+  const parsed = JSON.parse(readFileSync(productsJsonPath, "utf-8")) as {
+    products: SourceBundle[];
+  };
+  const bundles = parsed.products;
+
+  const header = `/**
+ * GENERATED FILE — do not hand-edit.
+ *
+ * Generated by scripts/sync-content.ts from adg_prod's Product Definition
+ * Layer (../adg_prod/products/*.yaml -> product/generated/products.json).
+ * To change bundle naming, taglines, industries, or domain composition,
+ * edit the YAML in adg_prod and re-run \`npm run sync-content\` (wired
+ * into \`npm run prebuild\`).
+ *
+ * \`pricing_status: "unbundled"\` means the domains are already live and
+ * enableable today -- there is simply no discounted bundle-level price
+ * for this exact combination yet. Never render an "unbundled" bundle as
+ * if a bundle discount/SKU exists. See adg_prod/products/README.md and
+ * content/bundles/bundles-overview.md.
+ */
+
+export type BundlePricingStatus = "unbundled" | "bundled";
+
+export interface Bundle {
+  slug: string;
+  name: string;
+  /** "unbundled" = domains enabled individually, no bundle price yet; "bundled" = a bundle-level price/SKU exists. */
+  pricingStatus: BundlePricingStatus;
+  tagline: string;
+  targetIndustries: string[];
+  /** Domain slugs this bundle composes -- each must match a Product['slug'] in data/products.ts. */
+  includesDomains: string[];
+}
+`;
+
+  const entries = bundles
+    .map(
+      (b) => `  {
+    slug: ${JSON.stringify(b.slug)},
+    name: ${JSON.stringify(b.name)},
+    pricingStatus: ${JSON.stringify(b.pricing_status)},
+    tagline: ${JSON.stringify(b.tagline)},
+    targetIndustries: ${JSON.stringify(b.target_industries)},
+    includesDomains: ${JSON.stringify(b.includes_domains)},
+  },`,
+    )
+    .join("\n");
+
+  const footer = `
+export function getBundle(slug: string): Bundle | undefined {
+  return bundles.find((b) => b.slug === slug);
+}
+`;
+
+  const out = `${header}\nexport const bundles: Bundle[] = [\n${entries}\n];\n${footer}`;
+  const destPath = join(REPO_ROOT, "data", "bundles.ts");
+  writeFileSync(destPath, out, "utf-8");
+  console.log(
+    `  generate data/bundles.ts <- adg_prod/product/generated/products.json (${bundles.length} bundles)`,
   );
 }
 
@@ -301,9 +446,11 @@ function main() {
   }
 
   syncProducts();
+  syncBundles();
   syncDocs();
   syncData();
   generateProductsTs();
+  generateBundlesTs();
 
   console.log("\nContent sync complete.");
 }

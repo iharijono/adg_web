@@ -32,6 +32,11 @@ export interface ProductCapability {
   status: CapabilityStatus;
 }
 
+export interface ProductUpgradeSignal {
+  signal: string;
+  addDomain: string;
+}
+
 export interface Product {
   slug: string;
   name: string;
@@ -47,6 +52,10 @@ export interface Product {
   buyers: string[];
   /** Capability bullets with ship status, sourced from the product's customer one-pager. */
   capabilities: ProductCapability[];
+  /** Scenarios where this domain alone is enough -- anti-oversell framing, see adg_prod/README.md. */
+  standaloneSufficientWhen?: string[];
+  /** Signals suggesting another domain should be added, each pointing at that domain's slug. */
+  upgradeSignals?: ProductUpgradeSignal[];
 }
 
 export const products: Product[] = [
@@ -70,6 +79,11 @@ export const products: Product[] = [
       { id: "evidence-store", name: "Evidence store", status: "available" },
       { id: "governance-dashboard-across-your-frameworks", name: "Governance dashboard across your frameworks", status: "available" },
     ],
+    standaloneSufficientWhen: ["You run a single AI application or agent workflow with one clear regulator or audit relationship","Your main need is proving what decision was made, by what, and why -- not detecting fraud, threats, or cost overruns"],
+    upgradeSignals: [
+      { signal: "Adversarial actors or fraud exposure exist around AI-driven decisions", addDomain: "trust-risk-threat-intelligence" },
+      { signal: "Leadership/board needs recurring AI risk reporting beyond compliance records", addDomain: "executive-intelligence" },
+    ],
   },
   {
     slug: "analytics",
@@ -90,6 +104,11 @@ export const products: Product[] = [
       { id: "lineage-complexity-and-activityresourceartifact-counts", name: "Lineage complexity and activity/resource/artifact counts", status: "available" },
       { id: "analytics-dashboard", name: "Analytics dashboard", status: "available" },
       { id: "alerts-via-slackwebhook", name: "Alerts via Slack/webhook", status: "available" },
+    ],
+    standaloneSufficientWhen: ["You need to detect AI quality regressions (accuracy, latency, silent failures) across one or a few AI systems","Your main need is noticing a problem before customers do, not proving a decision's provenance or attributing its cost"],
+    upgradeSignals: [
+      { signal: "Cost per decision/request is becoming a real budget concern", addDomain: "finops" },
+      { signal: "You also need to prove why a decision was made, for compliance -- not just that quality dropped", addDomain: "governance" },
     ],
   },
   {
@@ -113,6 +132,11 @@ export const products: Product[] = [
       { id: "budgets-next-to-usage", name: "Budgets next to usage", status: "available" },
       { id: "one-view-across-langgraph-semantic-kernel-langchain-openai-agents-pydantic-ai-aws-strands-and-plain-llm-apis", name: "One view across LangGraph, Semantic Kernel, LangChain, OpenAI Agents, Pydantic AI, AWS Strands and plain LLM APIs", status: "available" },
     ],
+    standaloneSufficientWhen: ["Your primary pain is attributing LLM/cloud spend to specific teams, apps, or features","You need a defensible cost number, not quality or compliance proof"],
+    upgradeSignals: [
+      { signal: "Quality or reliability regressions are also a concern, not just cost", addDomain: "analytics" },
+      { signal: "Spend decisions need to be defensible to auditors or regulators", addDomain: "governance" },
+    ],
   },
   {
     slug: "execution-intelligence",
@@ -133,6 +157,11 @@ export const products: Product[] = [
       { id: "planning-quality", name: "Planning quality", status: "available" },
       { id: "learning-trends-and-behaviour-profiling", name: "Learning trends and behaviour profiling", status: "available" },
       { id: "reliability-degradation-alerts-to-people-via-slackwebhook", name: "Reliability-degradation alerts to people via Slack/webhook", status: "available" },
+    ],
+    standaloneSufficientWhen: ["You run multi-step or multi-agent systems and need to know which execution units (nodes, tools, chains) are trustworthy or flaky","Your main need is execution-level visibility, not policy enforcement or leadership rollups"],
+    upgradeSignals: [
+      { signal: "Guardrail/safety violations need active oversight, not just execution-level visibility", addDomain: "oversight-intelligence" },
+      { signal: "Leadership wants a rollup across execution health, not step-level detail", addDomain: "executive-intelligence" },
     ],
   },
   {
@@ -156,6 +185,11 @@ export const products: Product[] = [
       { id: "alerts-on-behavioural-drift-and-degrading-policy-effectiveness-via-slack-or-generic-webhook", name: "Alerts on behavioural drift and degrading policy effectiveness via Slack or generic webhook", status: "available" },
       { id: "alerts-on-emerging-risks", name: "Alerts on emerging risks", status: "in_development" },
     ],
+    standaloneSufficientWhen: ["You already have guardrails/policies in place and need to verify they are actually catching violations before harm occurs","Your main need is policy-enforcement visibility, not a provable decision record or blast-radius analysis"],
+    upgradeSignals: [
+      { signal: "Violations are tied to real financial, legal or regulatory exposure, not just policy exceptions", addDomain: "trust-risk-threat-intelligence" },
+      { signal: "Compliance teams need a provable decision record, not just violation detection", addDomain: "governance" },
+    ],
   },
   {
     slug: "trust-risk-threat-intelligence",
@@ -174,6 +208,11 @@ export const products: Product[] = [
       { id: "integrity-anomaly-detection-and-alerts", name: "Integrity anomaly detection and alerts", status: "available" },
       { id: "alerts-on-new-high-risk-or-unapproved-decisions", name: "Alerts on new high-risk or unapproved decisions", status: "in_development" },
       { id: "alerts-on-growing-blast-radius", name: "Alerts on growing blast radius", status: "in_development" },
+    ],
+    standaloneSufficientWhen: ["Your primary concern is blast-radius -- when one AI decision goes wrong, how far does the damage reach and who is exposed","You need risk/threat analysis, not necessarily a regulator-facing audit record or board-level rollup"],
+    upgradeSignals: [
+      { signal: "You also need a durable, regulator-facing audit record of every decision, not just risk/blast-radius analysis", addDomain: "governance" },
+      { signal: "Board/executive reporting on AI risk posture is a recurring requirement", addDomain: "executive-intelligence" },
     ],
   },
   {
@@ -195,6 +234,11 @@ export const products: Product[] = [
       { id: "dashboard-tab-and-api", name: "Dashboard tab and API", status: "available" },
       { id: "posture-forecast", name: "Posture forecast", status: "in_development" },
       { id: "posture-trend-alerts", name: "Posture trend alerts", status: "in_development" },
+    ],
+    standaloneSufficientWhen: ["You need a single board/leadership-level view answering \"is our AI under control,\" without needing to operate the underlying operational detail yourself","Your main need is a rollup narrative, not day-to-day decision proof, cost attribution, or violation detection"],
+    upgradeSignals: [
+      { signal: "Day-to-day teams need the operational decision record behind the executive view, not just the rollup", addDomain: "governance" },
+      { signal: "Day-to-day teams need the underlying cost attribution behind the executive spend narrative", addDomain: "finops" },
     ],
   },
 ];

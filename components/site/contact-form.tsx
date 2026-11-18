@@ -6,11 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-const CONTACT_EMAIL = "hello@facet.ai";
+const CONTACT_EMAIL = "hello@facet-oi.com";
 
 export function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [company, setCompany] = useState("");
   const [message, setMessage] = useState("");
 
@@ -21,7 +22,7 @@ export function ContactForm() {
     e.preventDefault();
     const subject = encodeURIComponent(`Facet inquiry from ${name || "website visitor"}`);
     const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nCompany: ${company}\n\n${message}`
+      `Name: ${name}\nEmail: ${email}\n${phone ? `Phone: ${phone}\n` : ""}Company: ${company}\n\n${message}`
     );
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   }
@@ -39,7 +40,7 @@ export function ContactForm() {
           />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="email">Work email</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             id="email"
             type="email"
@@ -49,12 +50,23 @@ export function ContactForm() {
           />
         </div>
       </div>
-      <div className="space-y-1.5">
-        <Label htmlFor="company">Company</Label>
-        <Input id="company" value={company} onChange={(e) => setCompany(e.target.value)} />
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="space-y-1.5">
+          <Label htmlFor="phone">Phone (optional)</Label>
+          <Input
+            id="phone"
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="company">Company</Label>
+          <Input id="company" value={company} onChange={(e) => setCompany(e.target.value)} />
+        </div>
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="message">What AI system are you running, and what do you need?</Label>
+        <Label htmlFor="message">What AI or agentic system are you running, what do you need and why?</Label>
         <Textarea
           id="message"
           rows={5}

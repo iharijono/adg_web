@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://facet.ai";
+const SITE_URL = "https://facet-oi.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
